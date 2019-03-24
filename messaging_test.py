@@ -4,12 +4,26 @@ from firebase_admin import credentials
 
 print('hdhd')
 
+def get_file_contents(filename):
+    """ Given a filename,
+        return the contents of that file
+    """
+    try:
+        with open(filename, 'r') as f:
+            # It's assumed our file contains a single line,
+            # with our API key
+            return f.read().strip()
+    except FileNotFoundError:
+        print("'%s' file not found" % filename)
+
+
+
 def send_to_token():
     # [START send_to_token]
     # This registration token comes from the client FCM SDKs.
-    registration_token = 'eVLe-2qO67s:APA91bGzgBANFENHlHFoXjmXudkfK1dZaWaNlZJ9uwhQtHNuVWDsGcKMArxQNOEW2updmXC2ezQKYJgojv13jqIRAhJXkjJ_924WxXxOxh6VLokqJihVWs_rnsJ-HiQMjKOW4eRydXcf'
+    registration_token = get_file_contents('keys/firebase_registration_token')
 
-    cred = credentials.Certificate('serviceAccountKey.json')
+    cred = credentials.Certificate('keys/serviceAccountKey.json')
     firebase_admin.initialize_app(cred)
     # See documentation on defining a message payload.
     message = messaging.Message(
