@@ -16,20 +16,19 @@ def get_file_contents(filename):
     except FileNotFoundError:
         print("'%s' file not found" % filename)
 
+registration_token = get_file_contents('keys/firebase_registration_token')
 
+cred = credentials.Certificate('keys/serviceAccountKey.json')
+firebase_admin.initialize_app(cred)
 
-def send_to_token():
+def send_to_token(message_text):
     # [START send_to_token]
     # This registration token comes from the client FCM SDKs.
-    registration_token = get_file_contents('keys/firebase_registration_token')
 
-    cred = credentials.Certificate('keys/serviceAccountKey.json')
-    firebase_admin.initialize_app(cred)
     # See documentation on defining a message payload.
     message = messaging.Message(
         data={
-            'score': '850',
-            'time': '2:45',
+            'data': message_text
         },
         token=registration_token,
     )
@@ -40,6 +39,4 @@ def send_to_token():
     # Response is a message ID string.
     print('Successfully sent message:', response)
     # [END send_to_token]
-
-send_to_token()
 

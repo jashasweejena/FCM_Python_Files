@@ -1,5 +1,6 @@
 from telegram.ext import Updater, CommandHandler
 import logging
+import messaging_test
 
 def get_file_contents(filename):
     """ Given a filename,
@@ -28,7 +29,9 @@ start_handler = CommandHandler('start', start)
 dispatcher.add_handler(start_handler)
 
 def forward(update, context):
-    print(update.message['reply_to_message']['text'])
+    message = update.message['reply_to_message']['text']
+    print(message)
+    messaging_test.send_to_token(message)
 
 forward_handler = CommandHandler('pin', forward)
 dispatcher.add_handler(forward_handler)
